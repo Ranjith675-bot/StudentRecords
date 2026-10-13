@@ -15,4 +15,11 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="StudentRecords.Tests/**/*.cs" />
+    <Content Remove="StudentRecords.Tests/**" />
+    <EmbeddedResource Remove="StudentRecords.Tests/**" />
+    <None Remove="StudentRecords.Tests/**" />
+  </ItemGroup>
+
 </Project>
