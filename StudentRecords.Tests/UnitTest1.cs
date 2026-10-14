@@ -1,18 +1,55 @@
-﻿namespace StudentRecords.Tests;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using StudentRecordsApi.Models;
+using Xunit;
 
-public class UnitTest1
+namespace StudentRecords.Tests;
+
+public class StudentTests
 {
     [Fact]
-    public void Add_TwoNumbers_ReturnsCorrectResult()
+    public void ValidStudent_ShouldPassValidation()
     {
-        // Arrange
-        int a = 10;
-        int b = 20;
+        var student = new Student
+        {
+            RollNumber = 101,
+            Name = "Ranjith",
+            Course = "Computer Science",
+            Mark1 = 85,
+            Mark2 = 90,
+            Mark3 = 88
+        };
 
-        // Act
-        int result = a + b;
+        var results = new List<ValidationResult>();
+        var context = new ValidationContext(student);
 
-        // Assert
-        Assert.Equal(30, result);
+        bool isValid = Validator.TryValidateObject(
+            student, context, results, validateAllProperties: true);
+
+        Assert.True(isValid);
+    }
+
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(101)]
+    public void InvalidMark_ShouldFailValidation(int mark)
+    {
+        var student = new Student
+        {
+            RollNumber = 101,
+            Name = "Ranjith",
+            Course = "Computer Science",
+            Mark1 = mark,
+            Mark2 = 90,
+            Mark3 = 88
+        };
+
+        var results = new List<ValidationResult>();
+        var context = new ValidationContext(student);
+
+        bool isValid = Validator.TryValidateObject(
+            student, context, results, validateAllProperties: true);
+
+        Assert.False(isValid);
     }
 }
